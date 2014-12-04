@@ -1,6 +1,6 @@
 ﻿== ACCELERATE ==
 
-HELLO!!!!!
+HELLO!!!!!  This is another TEST for the QA site...
 
 
 Accelerate is multipurpose WordPress theme made for simplicity and ease of use. This theme is a piece of art that has this premium look and feel which will make your site stand out. Supports all post formats. Accelerate can be used for portfolio, business, blog, personal, travel, corporate, business services or any other kinds of sites.
