@@ -34,6 +34,6 @@
 		</footer>
 		<a href="#masthead" id="scroll-up"><i class="fa fa-long-arrow-up"></i></a>	
 	</div><!-- #page -->
-	<?php wp_footer(); ?>
+
 </body>
 </html>
