@@ -1,0 +1,31 @@
+[33mcommit 0d26c6f5ec053fc8cb33464636649e5acaa88fa5[m
+Author: wendysimone <wendy@ucf.edu>
+Date:   Thu Dec 4 14:13:42 2014 -0500
+
+    Testing push to QA
+    
+    edited COMMENTS
+
+[33mcommit 8454dc317eb7b47b7ca88752dd7c5884584a57e5[m
+Merge: 012f6f6 ebd4307
+Author: wendysimone <wendy@ucf.edu>
+Date:   Thu Dec 4 13:34:00 2014 -0500
+
+    Merge branch 'master' of https://github.com/wendysimone/TJEEI-Theme
+    
+    Conflicts:
+    	style.css
+
+[33mcommit 012f6f693206d2460a5ad18b53f4b6b2490da47a[m
+Author: wendysimone <wendy@ucf.edu>
+Date:   Thu Dec 4 13:19:03 2014 -0500
+
+    Fixed Typo
+    
+    URI to URL
+
+[33mcommit ebd430763091f70d4e501a82eb5becb6be1f84f3[m
+Author: Wendy <wendy@ucf.edu>
+Date:   Thu Dec 4 12:35:16 2014 -0500
+
+    Fixed Typo 'URI' to 'URL'
