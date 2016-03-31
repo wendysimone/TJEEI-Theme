@@ -12,6 +12,32 @@
  * @since Accelerate 1.0
  */
 
+/**
+ * Set the content width based on the theme's design and stylesheet.
+ */
+if ( ! isset( $content_width ) )
+   $content_width = 720;
+
+/**
+ * $content_width global variable adjustment as per layout option.
+ */
+function accelerate_content_width() {
+   global $post;
+   global $content_width;
+
+   if( $post ) { $layout_meta = get_post_meta( $post->ID, 'accelerate_page_layout', true ); }
+   if( empty( $layout_meta ) || is_archive() || is_search() ) { $layout_meta = 'default_layout'; }
+   $accelerate_default_layout = accelerate_options( 'accelerate_default_layout', 'right_sidebar' );
+
+   if( $layout_meta == 'default_layout' ) {
+      if ( $accelerate_default_layout == 'no_sidebar_full_width' ) { $content_width = 1100; /* pixels */ }
+      else { $content_width = 720; /* pixels */ }
+   }
+   elseif ( $layout_meta == 'no_sidebar_full_width' ) { $content_width = 1100; /* pixels */ }
+   else { $content_width = 720; /* pixels */ }
+}
+add_action( 'template_redirect', 'accelerate_content_width' );
+
 add_action( 'after_setup_theme', 'accelerate_setup' );
 /**
  * All setup functionalities.
@@ -20,13 +46,6 @@ add_action( 'after_setup_theme', 'accelerate_setup' );
  */
 if( !function_exists( 'accelerate_setup' ) ) :
 function accelerate_setup() {
-
-	/**
-	 * Set the content width based on the theme's design and stylesheet.
-	 */
-	global $content_width;
-	if ( ! isset( $content_width ) )
-		$content_width = 720;
 
 	/*
 	 * Make theme available for translation.
@@ -39,9 +58,12 @@ function accelerate_setup() {
 
 	// This theme uses Featured Images (also known as post thumbnails) for per-post/per-page.
 	add_theme_support( 'post-thumbnails' );
- 
+
+   // Supporting title tag via add_theme_support (since WordPress 4.1)
+   add_theme_support( 'title-tag' );
+
 	// Registering navigation menus.
-	register_nav_menus( array(	
+	register_nav_menus( array(
 		'primary' 	=> __( 'Primary/Main Menu', 'accelerate' ),
 		'footer' 	=> __( 'Footer Menu', 'accelerate' )
 	) );
@@ -50,7 +72,7 @@ function accelerate_setup() {
 	add_image_size( 'featured-blog-large', 720, 300, true );
 	add_image_size( 'featured-blog-small', 230, 230, true );
 	add_image_size( 'featured-service', 600, 330, true );
-	add_image_size( 'featured-recent-work', 365, 365, true );	
+	add_image_size( 'featured-recent-work', 365, 365, true );
 
 	// Setup the WordPress core custom background feature.
 	add_theme_support( 'custom-background', apply_filters( 'accelerate_custom_background_args', array(
@@ -62,17 +84,25 @@ function accelerate_setup() {
 
 	// Adding excerpt option box for pages as well
 	add_post_type_support( 'page', 'excerpt' );
+
+   /*
+    * Switch default core markup for search form, comment form, and comments
+    * to output valid HTML5.
+    */
+   add_theme_support('html5', array(
+       'search-form', 'comment-form', 'comment-list', 'gallery', 'caption',
+   ));
 }
 endif;
 
 /**
- * Define Directory Location Constants 
+ * Define Directory Location Constants
  */
 define( 'ACCELERATE_PARENT_DIR', get_template_directory() );
 define( 'ACCELERATE_CHILD_DIR', get_stylesheet_directory() );
 
 define( 'ACCELERATE_IMAGES_DIR', ACCELERATE_PARENT_DIR . '/images' );
-define( 'ACCELERATE_INCLUDES_DIR', ACCELERATE_PARENT_DIR. '/inc' );	
+define( 'ACCELERATE_INCLUDES_DIR', ACCELERATE_PARENT_DIR. '/inc' );
 define( 'ACCELERATE_CSS_DIR', ACCELERATE_PARENT_DIR . '/css' );
 define( 'ACCELERATE_JS_DIR', ACCELERATE_PARENT_DIR . '/js' );
 define( 'ACCELERATE_LANGUAGES_DIR', ACCELERATE_PARENT_DIR . '/languages' );
@@ -85,8 +115,8 @@ define( 'ACCELERATE_ADMIN_JS_DIR', ACCELERATE_ADMIN_DIR . '/js' );
 define( 'ACCELERATE_ADMIN_CSS_DIR', ACCELERATE_ADMIN_DIR . '/css' );
 
 
-/** 
- * Define URL Location Constants 
+/**
+ * Define URL Location Constants
  */
 define( 'ACCELERATE_PARENT_URL', get_template_directory_uri() );
 define( 'ACCELERATE_CHILD_URL', get_stylesheet_directory_uri() );
@@ -107,19 +137,31 @@ define( 'ACCELERATE_ADMIN_CSS_URL', ACCELERATE_ADMIN_URL . '/css' );
 /** Load functions */
 require_once( ACCELERATE_INCLUDES_DIR . '/custom-header.php' );
 require_once( ACCELERATE_INCLUDES_DIR . '/functions.php' );
+require_once( ACCELERATE_INCLUDES_DIR . '/customizer.php' );
 require_once( ACCELERATE_INCLUDES_DIR . '/header-functions.php' );
 
-require_once( ACCELERATE_ADMIN_DIR . '/meta-boxes.php' );		
+require_once( ACCELERATE_ADMIN_DIR . '/meta-boxes.php' );
 
 /** Load Widgets and Widgetized Area */
 require_once( ACCELERATE_WIDGETS_DIR . '/widgets.php' );
 
-/**
- * Adds support for a theme option.
+/*
+ * Adding Admin Menu for theme options
  */
-if ( !function_exists( 'optionsframework_init' ) ) {
-	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/inc/admin/options/' );
-	require_once( ACCELERATE_ADMIN_DIR . '/options/options-framework.php' );
+add_action( 'admin_menu', 'accelerate_theme_options_menu' );
+function accelerate_theme_options_menu() {
+   add_theme_page( 'Theme Options', 'Theme Options', 'manage_options', 'accelerate-theme-options', 'accelerate_theme_options' );
 }
 
+function accelerate_theme_options() {
+   if ( !current_user_can( 'manage_options' ) )  {
+      wp_die( __( 'You do not have sufficient permissions to access this page.', 'accelerate' ) );
+   } ?>
+   <h1 class="accelerate-theme-options"><?php _e( 'Theme Options', 'accelerate' ); ?></h1>
+   <?php
+   printf( __('<p style="font-size: 16px; max-width: 800px";>As our themes are hosted on WordPress repository, we need to follow the WordPress theme guidelines and as per the new guiedlines we have migrated all our Theme Options to Customizer.</p><p style="font-size: 16px; max-width: 800px";>We too think this is a better move in the long run. All the options are unchanged, it is just that they are moved to customizer. So, please use this <a href="%1$s">link</a> to customize your site. If you have any issues then do let us know via our <a href="%2$s">Contact form</a></p>', 'accelerate'),
+      esc_url(admin_url( 'customize.php' ) ),
+      esc_url('http://themegrill.com/contact/')
+   );
+}
 ?>

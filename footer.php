@@ -18,7 +18,7 @@
 			<div class="footer-socket-wrapper clearfix">
 				<div class="inner-wrap">
 					<div class="footer-socket-area">
-					
+						<?php do_action( 'accelerate_footer_copyright' ); ?>
 						<nav class="footer-menu" class="clearfix">
 							<?php
 								if ( has_nav_menu( 'footer' ) ) {									
@@ -34,6 +34,6 @@
 		</footer>
 		<a href="#masthead" id="scroll-up"><i class="fa fa-long-arrow-up"></i></a>	
 	</div><!-- #page -->
-
+	<?php wp_footer(); ?>
 </body>
 </html>
