@@ -829,7 +829,7 @@ li.default-menu {
 #featured-slider .entry-container-left .entry-content {
 	text-align: left;
 }
-
+/* HIDE while slider isn't working
 .slider-nav {
 	bottom: 44%;
 	display: block;
@@ -867,7 +867,7 @@ li.default-menu {
 	opacity: 1;
 	filter:alpha(opacity=100);
 }
-
+*/
 /* =SLIDER CONTROLLERS 
 ----------------------------------------------- */
 #controllers {
