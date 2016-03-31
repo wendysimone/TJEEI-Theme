@@ -644,7 +644,7 @@ li.default-menu {
 .main-navigation ul li.current-menu-ancestor ul li a,
 .main-navigation ul li.current_page_item ul li a {
 	float: none;
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 300;
 	height: 100%;
 	padding: 8px 14px;
