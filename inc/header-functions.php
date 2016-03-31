@@ -9,51 +9,6 @@
 
 /****************************************************************************************/
 
-add_filter( 'wp_title', 'accelerate_filter_wp_title' );
-if ( ! function_exists( 'accelerate_filter_wp_title' ) ) :
-/**
- * Modifying the Title
- *
- * Function tied to the wp_title filter hook.
- * @uses filter wp_title
- */
-function accelerate_filter_wp_title( $title ) {
-	global $page, $paged;
-	
-	// Get the Site Name
-   $site_name = get_bloginfo( 'name' );
-
-   // Get the Site Description
-   $site_description = get_bloginfo( 'description' );
-
-   $filtered_title = ''; 
-
-	// For Homepage or Frontpage
-   if(  is_home() || is_front_page() ) {		
-		$filtered_title .= $site_name;	
-		if ( !empty( $site_description ) )  {
-        	$filtered_title .= ' &#124; '. $site_description;
-		}
-   }
-	elseif( is_feed() ) {
-		$filtered_title = '';
-	}
-	else{	
-		$filtered_title = $title . $site_name;
-	}
-
-	// Add a page number if necessary:
-	if( $paged >= 2 || $page >= 2 ) {
-		$filtered_title .= ' &#124; ' . sprintf( __( 'Page %s', 'accelerate' ), max( $paged, $page ) );
-	}
-	
-	// Return the modified title
-   return $filtered_title;
-}
-endif;
-
-/****************************************************************************************/
-
 if ( ! function_exists( 'accelerate_render_header_image' ) ) :
 /**
  * Shows the small info text on top header part
@@ -81,13 +36,12 @@ function accelerate_featured_image_slider() {
 			<div class="slider-cycle inner-wrap">
 				<div class="slider-rotate">
 				<?php
-				$num_of_slides = of_get_option( 'accelerate_slider_number', '5' );
-				for( $i = 1; $i <= $num_of_slides; $i++ ) {
-					$accelerate_slider_title = of_get_option( 'accelerate_slider_title'.$i , '' );
-					$accelerate_slider_text = of_get_option( 'accelerate_slider_text'.$i , '' );
-					$accelerate_slider_image = of_get_option( 'accelerate_slider_image'.$i , '' );
-					$accelerate_slide_text_position = of_get_option( 'accelerate_slide_text_position'.$i , 'right' );
-					$accelerate_slider_link = of_get_option( 'accelerate_slider_link'.$i , '#' );
+				for( $i = 1; $i <= 4; $i++ ) {
+					$accelerate_slider_title = accelerate_options( 'accelerate_slider_title'.$i , '' );
+					$accelerate_slider_text = accelerate_options( 'accelerate_slider_text'.$i , '' );
+					$accelerate_slider_image = accelerate_options( 'accelerate_slider_image'.$i , '' );
+					$accelerate_slide_text_position = accelerate_options( 'accelerate_slide_text_position'.$i , 'right' );
+					$accelerate_slider_link = accelerate_options( 'accelerate_slider_link'.$i , '#' );
 					if( !empty( $accelerate_header_title ) || !empty( $accelerate_slider_text ) || !empty( $accelerate_slider_image ) ) {
 						if ( $i == 1 ) { $classes = "slides displayblock"; } else { $classes = "slides displaynone"; }
 
@@ -113,13 +67,11 @@ function accelerate_featured_image_slider() {
 					}
 				}
 				?>
+   			</div>
+   			<a class="slide-next" href="#"><i class="fa fa-angle-right"></i></a>
+            <a class="slide-prev" href="#"><i class="fa fa-angle-left"></i></a>
 			</div>
-				<div class="slider-nav">
-				<a class="slide-next" href="#"><i class="fa fa-angle-right"></i></a>
-				<a class="slide-prev" href="#"><i class="fa fa-angle-left"></i></a>
-			</div>
-			</div>
-			
+
 			<nav id="controllers" class="clearfix"></nav>
 		</section>
 
