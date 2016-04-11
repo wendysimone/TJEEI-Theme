@@ -3,7 +3,7 @@
  * Theme Footer Section for our theme.
  * 
  * Displays all of the footer section and closing of the #main div.
- *REMOVED from LINE 21 /** do_action( 'accelerate_footer_copyright' );*/ 
+
  * @package ThemeGrill
  * @subpackage Accelerate
  * @since Accelerate 1.0
@@ -18,7 +18,7 @@
 			<div class="footer-socket-wrapper clearfix">
 				<div class="inner-wrap">
 					<div class="footer-socket-area">
-					
+					 <?php do_action( 'accelerate_footer_copyright' ); ?> 
 						<nav class="footer-menu" class="clearfix">
 							<?php
 								if ( has_nav_menu( 'footer' ) ) {									
