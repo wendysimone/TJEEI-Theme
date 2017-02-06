@@ -323,5 +323,5 @@ and we will include it within the theme from next version update.
 * CSS adjustment for slider navigation arrow.
 
 = Version 1.0 =
->>>>>>> f050ff3581341b99024887a6e53646dc0e27b973
+
 * All brand new.
