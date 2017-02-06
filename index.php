@@ -1,6 +1,6 @@
 <?php 
 /**
- * Theme Index Section for our theme - for TJEEI.
+ * Theme Index Section for our theme.
  *
  * @package ThemeGrill
  * @subpackage Accelerate
