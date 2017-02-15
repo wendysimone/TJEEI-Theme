@@ -1,6 +1,6 @@
 <?php 
 /**
- * Theme Footer Section for our theme.
+ * Theme Footer Section for our theme. Modified by Wendy.
  * 
  * Displays all of the footer section and closing of the #main div.
 
